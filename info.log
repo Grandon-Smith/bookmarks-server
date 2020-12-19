@@ -1,0 +1,3 @@
+{"message":"Unauthorized request to path: /","level":"error"}
+{"message":"bookmark with id of undefined was not found","level":"error"}
+{"message":"bookmark with id of 4 was not found","level":"error"}
