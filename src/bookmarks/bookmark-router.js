@@ -11,7 +11,7 @@ bookmarkRouter
         res.json(BOOKMARKS)
     })
     .post(bodyParser, (req, res) => {
-        const {id, title, url, rating, desc} = req.body;
+        const {id, title, url, rating, description} = req.body;
         if(!id) {
             logger.error(`id is required`);
             return res.status(400).send('id Invalid input')
@@ -25,7 +25,7 @@ bookmarkRouter
         }if(!rating) {
             logger.error(`rating is required`);
             return res.status(400).send('rating Invalid input')
-        }if(!desc) {
+        }if(!description) {
             logger.error(`desc is required`);
             return res.status(400).send('description Invalid input')
         }
@@ -34,7 +34,7 @@ bookmarkRouter
             title,
             url,
             rating,
-            desc,
+            description,
         };
         BOOKMARKS.push(bookmark);
         logger.info(`card with id ${id} was created`);

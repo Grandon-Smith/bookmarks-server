@@ -18,7 +18,6 @@ app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
 app.use(express.json())
-app.use(bookmarkRouter)
 
 app.use(function validateBearerToken(req, res, next) {
     const apiToken = process.env.API_TOKEN
@@ -42,8 +41,6 @@ app.use(function errorHandler(error, req, res, next) {
     res.status(500).json(response)
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello, world!')
-});
+app.use(bookmarkRouter);
 
 module.exports = app;
