@@ -18,3 +18,8 @@
 {"message":"card with id undefined wasn't found!","level":"error"}
 {"message":"bookmark with id of 3 was not found","level":"error"}
 {"message":"card with id 3 was created","level":"info"}
+{"message":"card with id 3 was created","level":"info"}
+{"message":"card with id 3 was created","level":"info"}
+{"message":"Card with id 3 was deleted","level":"info"}
+{"message":"Card with id 3 was deleted","level":"info"}
+{"message":"Unauthorized request to path: /","level":"error"}
