@@ -3,6 +3,7 @@ const BOOKMARKS = require('../store');
 const logger = require('../logger')
 const bodyParser = express.json();
 const bookmarkRouter = express.Router();
+const {v4: uuid} = require('uuid');
 
 
 bookmarkRouter
@@ -11,11 +12,11 @@ bookmarkRouter
         res.json(BOOKMARKS)
     })
     .post(bodyParser, (req, res) => {
-        const {id, title, url, rating, description} = req.body;
-        if(!id) {
-            logger.error(`id is required`);
-            return res.status(400).send('id Invalid input')
-        }
+        const {title, url, rating, description} = req.body;
+        // if(!id) {
+        //     logger.error(`id is required`);
+        //     return res.status(400).send('id Invalid input')
+        // }
         if(!title) {
             logger.error(`title is required`);
             return res.status(400).send('title Invalid input')
@@ -30,16 +31,16 @@ bookmarkRouter
             return res.status(400).send('description Invalid input')
         }
         const bookmark = {
-            id,
+            id: uuid(),
             title,
             url,
             rating,
             description,
         };
         BOOKMARKS.push(bookmark);
-        logger.info(`card with id ${id} was created`);
+        logger.info(`card with id ${bookmark.id} was created`);
         res.status(201)
-            .location(`http://localhost:8000/bookmarks/${id}`)
+            .location(`http://localhost:8000/bookmarks/${bookmark.id}`)
             .json(bookmark);
     });
 

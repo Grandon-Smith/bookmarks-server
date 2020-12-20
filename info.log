@@ -23,3 +23,8 @@
 {"message":"Card with id 3 was deleted","level":"info"}
 {"message":"Card with id 3 was deleted","level":"info"}
 {"message":"Unauthorized request to path: /","level":"error"}
+{"message":"Unauthorized request to path: /movie","level":"error"}
+{"message":"Unauthorized request to path: /bookmarks/1","level":"error"}
+{"message":"Unauthorized request to path: /bookmarks/1","level":"error"}
+{"message":"desc is required","level":"error"}
+{"message":"card with id 2bc5c011-48f4-48da-bbb9-6e5f211e9cf9 was created","level":"info"}
