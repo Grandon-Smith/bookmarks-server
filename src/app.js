@@ -28,7 +28,7 @@ app.use(function validateBearerToken(req, res, next) {
       return res.status(401).json({ error: 'Unauthorized request' })
     }
     next()
-  })
+})
 
 app.use(function errorHandler(error, req, res, next) {
     let response;
@@ -40,6 +40,8 @@ app.use(function errorHandler(error, req, res, next) {
     }
     res.status(500).json(response)
 });
+
+
 app.get('/', (req, res) => {
     res.send('Hello, world!')
 });

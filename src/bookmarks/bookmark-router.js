@@ -13,10 +13,6 @@ bookmarkRouter
     })
     .post(bodyParser, (req, res) => {
         const {title, url, rating, description} = req.body;
-        // if(!id) {
-        //     logger.error(`id is required`);
-        //     return res.status(400).send('id Invalid input')
-        // }
         if(!title) {
             logger.error(`title is required`);
             return res.status(400).send('title Invalid input')
