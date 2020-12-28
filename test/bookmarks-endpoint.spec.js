@@ -66,7 +66,7 @@ describe(`Bookmark Endpoint Testing`, () => {
             })
         })
     })
-    describe.only(`POST /bookmarks `, () => {
+    describe(`POST /bookmarks `, () => {
         it(`Responds with 201 and article`, () => {
             const newBookmark = {
                 id: uuid(),
@@ -84,15 +84,41 @@ describe(`Bookmark Endpoint Testing`, () => {
                     expect(res.body.description).to.eql(newBookmark.description)
                     expect(res.body).to.have.property('id')
                 })
+                
+        })
+    })
+    describe.only(`DELETE /bookmarks/:bookmark_id`, () => {
+        context(`Given there are bookmarks in database`, () => {
+            const testBookmarks = makeTestBookmarks()
+            beforeEach('insert bookmarks', () => {
+                return db
+                .into('bookmarks_test')
+                .insert(testBookmarks)
+            })
+
+            it(`responds with 204, deletes bookmark`, () => {
+                const bookmarkId = 1
+                const expectedBookmarks = testBookmarks
+                    .filter(b => b.id !== bookmarkId)
+                supertest(app)
+                    .delete(`/bookmarks/${bookmarkId}`)
+                    .expect(204)
+                    .then(res => 
+                        supertest(app)
+                            .get(`/bookmarks`)
+                            .expect(expectedBookmarks))
+            })
+        })
+        context(`Given no bookmarks`, () => {
+            it(`responds with 404`, () => {
+                const bookmarkId = 123
+                return supertest(app)
+                    .delete(`/articles/${bookmarkId}`)
+                    .expect(404, { 
+                        // error: { message: `Bookmark doesn't exist` }
+                    })
+            })
         })
 
-        // context('Given there are articles in the database', () => {
-
-        //     it('responds with 200 and all of the bookmarks', () => {
-        //         return supertest(app)
-        //         .get('/bookmarks')
-        //         .expect(200, testBookmarks)
-        //     })
-        // })
     })
 })

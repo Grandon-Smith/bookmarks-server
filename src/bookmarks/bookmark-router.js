@@ -11,6 +11,7 @@ const path = require('path')
 
 bookmarkRouter
     .route('/bookmarks')
+
     .get((req, res, next) => {
         BookmarksService.getAllBookmarks(
             req.app.get('db')
@@ -20,8 +21,8 @@ bookmarkRouter
         })
         .catch(next)
     })
+
     .post(bodyParser, (req, res, next) => {
-        
         const {title, url, rating, description} = req.body;
         if(!title) {
             logger.error(`title is required`);
@@ -51,33 +52,43 @@ bookmarkRouter
 
 bookmarkRouter
     .route('/bookmarks/:bookmark_id')
-    .get((req, res, next) => {
-
+    .all((req, res, next) => {
+        const { bookmark_id } = req.params
+        BookmarksService.getById(req.app.get('db'), bookmark_id)
+          .then(bookmark => {
+            if (!bookmark) {
+              return res.status(404).json({
+                error: { message: `Bookmark doesn't exist` }
+              })
+            }
+            next()
+          })
+          .catch(next)
+      })
+    .get((req, res) => {
         const { bookmark_id } = req.params
         BookmarksService.getById(
             req.app.get('db'),
             bookmark_id
         )
         .then(bookmark => {
-            if(!bookmark) {
-                return res.status(404).json({
-                    error: { message: `bookmark doesn't exist` }
-                })
-            }
             res.json(bookmark)
-            next()
         })
     })
-    // .delete((req, res) => {
-    //     const { id } = req.params;
-    //     const bookmarkIndex = BOOKMARKS.findIndex(book => book.id == id);
-    //     if (bookmarkIndex === -1) {
-    //         logger.error(`card with id ${id} wasn't found!`);
-    //         return res.status(404).send('Card not found')
-    //     }
-    //     BOOKMARKS.splice(bookmarkIndex, 1);
-    //     logger.info(`Card with id ${id} was deleted`);
-    //     res.status(204).end();
-    // });
+    .delete((req, res, next) => {
+        const { bookmark_id } = req.params;
+        BookmarksService.deleteBookmark(
+            req.app.get('db'),
+            bookmark_id
+        )
+        .then(
+            res
+                .status(204, { 
+                    error: { message: `Bookmark doesn't exist` }
+                })
+                .end()
+        )
+        .catch(next)
+    });
 
     module.exports = bookmarkRouter;
