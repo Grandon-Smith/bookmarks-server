@@ -20,34 +20,34 @@ bookmarkRouter
         })
         .catch(next)
     })
-    // .post(bodyParser, (req, res) => {
-    //     const {title, url, rating, description} = req.body;
-    //     if(!title) {
-    //         logger.error(`title is required`);
-    //         return res.status(400).send('title Invalid input')
-    //     }if(!url) {
-    //         logger.error(`url is required`);
-    //         return res.status(400).send('url Invalid input')
-    //     }if(!rating) {
-    //         logger.error(`rating is required`);
-    //         return res.status(400).send('rating Invalid input')
-    //     }if(!description) {
-    //         logger.error(`desc is required`);
-    //         return res.status(400).send('description Invalid input')
-    //     }
-    //     const bookmark = {
-    //         id: uuid(),
-    //         title,
-    //         url,
-    //         rating,
-    //         description,
-    //     };
-    //     BOOKMARKS.push(bookmark);
-    //     logger.info(`card with id ${bookmark.id} was created`);
-    //     res.status(201)
-    //         .location(`http://localhost:8000/bookmarks/${bookmark.id}`)
-    //         .json(bookmark);
-    // });
+    .post(bodyParser, (req, res, next) => {
+        
+        const {title, url, rating, description} = req.body;
+        if(!title) {
+            logger.error(`title is required`);
+            return res.status(400).send('title Invalid input')
+        }if(!url) {
+            logger.error(`url is required`);
+            return res.status(400).send('url Invalid input')
+        }if(!rating) {
+            logger.error(`rating is required`);
+            return res.status(400).send('rating Invalid input')
+        }if(!description) {
+            logger.error(`desc is required`);
+            return res.status(400).send('description Invalid input')
+        }
+        const bookmark = {
+            id: uuid(),
+            title,
+            url,
+            rating,
+            description,
+        };
+        res
+        .status(201)
+        .location(`http://localhost:8000/bookmarks/${bookmark.id}`)
+        .json(bookmark)
+    });
 
 bookmarkRouter
     .route('/bookmarks/:bookmark_id')

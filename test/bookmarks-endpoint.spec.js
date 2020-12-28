@@ -3,6 +3,8 @@ const knex = require('knex')
 const supertest = require('supertest')
 const app = require('../src/app')
 const { makeTestBookmarks } = require('./bookmarks.fixtures');
+const {v4: uuid} = require('uuid');
+
 
 describe(`Bookmark Endpoint Testing`, () => {
     let db
@@ -40,7 +42,7 @@ describe(`Bookmark Endpoint Testing`, () => {
             })
         })
     })
-    describe.only(`GET /bookmarks/:bookmark_id endpoint`, () => {
+    describe(`GET /bookmarks/:bookmark_id endpoint`, () => {
         context(`Given no bookmarks in database`, () => {
             it(`Responds with 404`, () => {
                 return supertest(app)
@@ -63,5 +65,34 @@ describe(`Bookmark Endpoint Testing`, () => {
                 .expect(200)
             })
         })
+    })
+    describe.only(`POST /bookmarks `, () => {
+        it(`Responds with 201 and article`, () => {
+            const newBookmark = {
+                id: uuid(),
+                title: 'Githubbb',
+                url: 'http://www.github.com/',
+                rating: '4',
+                description: 'hoosy whatsits community of developers.'
+              }
+            return supertest(app)
+                .post('/bookmarks')
+                .send(newBookmark)
+                .expect(res => {
+                    expect(res.body.title).to.eql(newBookmark.title)
+                    expect(res.body.url).to.eql(newBookmark.url)
+                    expect(res.body.description).to.eql(newBookmark.description)
+                    expect(res.body).to.have.property('id')
+                })
+        })
+
+        // context('Given there are articles in the database', () => {
+
+        //     it('responds with 200 and all of the bookmarks', () => {
+        //         return supertest(app)
+        //         .get('/bookmarks')
+        //         .expect(200, testBookmarks)
+        //     })
+        // })
     })
 })
