@@ -50,15 +50,24 @@ bookmarkRouter
     });
 
 bookmarkRouter
-    .route('/bookmarks/:id')
-    .get((req, res) => {
-        const { id } = req.params;
-        const bookmark = BOOKMARKS.find(book => book.id == id)
-        if(!bookmark) {
-            logger.error(`bookmark with id of ${id} was not found`);
-            return res.status(404).send('bookmark not found');
-        }
-        return res.json(bookmark)
+    .route('/bookmarks/:bookmark_id')
+    .get((req, res, next) => {
+
+        const { bookmark_id } = req.params
+        BookmarksService.getById(
+            req.app.get('db'),
+            bookmark_id
+        )
+        .then(bookmark => {
+            if(!bookmark) {
+                return res.status(404).json({
+                    error: { message: `bookmark doesn't exist` }
+                })
+            }
+            res.json(bookmark)
+            next()
+        })
+        
     })
     .delete((req, res) => {
         const { id } = req.params;
