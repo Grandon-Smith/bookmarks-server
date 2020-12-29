@@ -83,9 +83,7 @@ bookmarkRouter
         )
         .then(
             res
-                .status(204, { 
-                    error: { message: `Bookmark doesn't exist` }
-                })
+                .status(204)
                 .end()
         )
         .catch(next)
